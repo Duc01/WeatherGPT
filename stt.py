@@ -1,4 +1,5 @@
 from sarvamai import SarvamAI
+import os
 
 def stt(recording  : str) -> str:
     '''
@@ -9,7 +10,7 @@ def stt(recording  : str) -> str:
     Converts speech to text
     '''
 
-    client = SarvamAI(api_subscription_key="Api_key")
+    client = SarvamAI(api_subscription_key = os.environ["SARVAM_API_KEY"])
 
     response = client.speech_to_text.transcribe(
             file=open(recording, "rb"),
