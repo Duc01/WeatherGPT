@@ -5,7 +5,7 @@ from google import genai
 from google.genai import types
 import os
 import time
-import soundfile
+# import soundfile
 
 from stt import stt
 from tts import tts
@@ -83,13 +83,13 @@ def get_or_create_chat(user_id: str):
         )
     return user_sessions[user_id]
 
-def get_llm_response(user_input: str, user_id: str) -> str:
+def get_llm_response(user_input: str, user_id: str, location: dict | None = None) -> str:
     '''
     The Brain of the Project, Just generates the response based on facts gathered.
     '''
     chat = get_or_create_chat(user_id)
 
-    location = get_user_location(user_id)
+    location = location or get_user_location(user_id)
     if location:
         augmented_input = (
             f"[User's saved location: latitude={location['latitude']}, "
@@ -99,18 +99,9 @@ def get_llm_response(user_input: str, user_id: str) -> str:
         augmented_input = user_input
 
     start_time = time.perf_counter()
-    first_token = True
-    full_response = ""
-
     response = chat.send_message(augmented_input)
-    for chunk in response:
-        if not chunk.text:
-            continue
-        if first_token:
-            ttft = time.perf_counter() - start_time
-            print(f"[TTFT: {ttft:.2f}s]")
-            first_token = False
-        full_response += chunk.text
+    full_response = response.text or ""
+    print(f"[Response time: {time.perf_counter() - start_time:.2f}s]")
 
     print(f"WeatherGPT ({user_id}): {full_response}")
     return full_response
@@ -126,8 +117,10 @@ def process_voice_mssg(audio_path: str, user_id: str):
     
     return output_audio_path
 
-def process_text_message(user_input: str, user_id: str) -> str:
+def process_text_message(
+    user_input: str, user_id: str, location: dict | None = None
+) -> str:
     """
     Text in -> LLM -> returns response text directly, no TTS.
     """
-    return get_llm_response(user_input, user_id)
+    return get_llm_response(user_input, user_id, location)

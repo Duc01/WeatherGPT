@@ -1,7 +1,11 @@
 from sarvamai import SarvamAI
 from sarvamai.play import save
-from LLM import OUTPUT_DIR
 import os
+from uuid import uuid4
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(BASE_DIR, "Outputs")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def tts(speech: str, lang: str):
     
@@ -12,7 +16,8 @@ def tts(speech: str, lang: str):
     2. lang: The language to which you want it to speak, SHould be same as the 'speech'. For eg, hi-IN, ta-IN
     '''
     
-    client = SarvamAI(api_subscription_key = os.environ["SARVAM_API_KEY"])
+    api_key = os.environ.get("SARVAM_API_KEY")
+    client = SarvamAI(api_subscription_key=api_key)
 
     response = client.text_to_speech.convert(
         text= speech,
@@ -21,4 +26,6 @@ def tts(speech: str, lang: str):
         speaker="shreya"           # or "meera", "shubh" ,....
     )
 
-    save(response, OUTPUT_DIR)
+    output_path = os.path.join(OUTPUT_DIR, f"response_{uuid4().hex}.wav")
+    save(response, output_path)
+    return output_path
