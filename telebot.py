@@ -5,6 +5,7 @@ load_dotenv()
 from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from LLM import process_location_setup, process_text_message
+from stt import stt
 from tts import tts
 from teleToken import TOKEN
 import os
@@ -44,6 +45,27 @@ async def get_location(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     await update.message.reply_text(
         process_location_setup(latitude, longitude, str(update.effective_user.id))
     )
+
+
+async def get_voice_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Transcribe a voice message and answer its weather request."""
+    voice = update.message.voice
+    telegram_file = await context.bot.get_file(voice.file_id)
+    input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Telegram_input_audio_files")
+    os.makedirs(input_dir, exist_ok=True)
+    audio_path = os.path.join(input_dir, f"{voice.file_unique_id}.ogg")
+
+    await telegram_file.download_to_drive(audio_path)
+    try:
+        user_input = stt(audio_path)
+        response = process_text_message(
+            user_input,
+            str(update.effective_user.id),
+            context.user_data.get("location"),
+        )
+        await update.message.reply_text(response)
+    finally:
+        os.remove(audio_path)
 
 
 # Send out weather info for given location
@@ -90,6 +112,7 @@ def main() -> None:
     
     # Register message handlers
     application.add_handler(MessageHandler(filters.LOCATION, get_location))
+    application.add_handler(MessageHandler(filters.VOICE, get_voice_message))
 
     # Run the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
