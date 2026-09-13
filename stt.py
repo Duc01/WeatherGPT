@@ -1,6 +1,9 @@
 from sarvamai import SarvamAI
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 def stt(recording  : str) -> str:
     '''
     Args:

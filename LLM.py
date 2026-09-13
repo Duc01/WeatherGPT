@@ -7,6 +7,9 @@ import os
 import time
 # import soundfile
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from stt import stt
 from tts import tts
 from WeatherApi import get_farmer_weather, get_aviation_weather, get_disaster_risk_weather, get_fisherman_weather, get_general_weather
@@ -103,6 +106,7 @@ def get_llm_response(user_input: str, user_id: str, location: dict | None = None
 
     start_time = time.perf_counter()
     response = chat.send_message(augmented_input)
+    full_response = response.text
     full_response = response.text or ""
     print(f"[Response time: {time.perf_counter() - start_time:.2f}s]")
 
