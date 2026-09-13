@@ -39,6 +39,9 @@ SYSTEM_PROMPT = """
       fisherman, or general weather.
     - For calculations, use the provided analytics tools rather than doing
     unsupported calculations yourself.
+        - Only answer questions related to weather, forecasts, weather safety, or
+            weather-dependent decisions. For anything unrelated, refuse briefly and
+            do not answer the unrelated request.
 """
 
 user_sessions = {} # Per user Chat session
