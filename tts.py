@@ -39,11 +39,10 @@ def tts(speech: str, lang: str, filename: str = "response.wav") -> str:
         text=speech,
         language_code=lang,
         model="bulbul:v3",
-        speaker="shreya"           # or "meera", "shubh", ....
+        speaker="simran"           # or "meera", "shubh", ....
     )
  
     output_path = os.path.join(OUTPUT_DIR, filename)
 
-    output_path = os.path.join(OUTPUT_DIR, f"response_{uuid4().hex}.wav")
     save(response, output_path)
     return output_path

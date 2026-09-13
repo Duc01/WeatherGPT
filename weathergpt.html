@@ -252,7 +252,7 @@
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                     <span>Try Voice & Text Studio</span>
                 </a>
-                <a href="https://t.me" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl liquid-glass border border-purpleAccent/30 hover:border-fuchsiaGlow/60 text-white font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-3 hover:bg-purpleCard">
+                <a href="https://t.me/sih26test_bot" target="_blank" rel="noopener" class="w-full sm:w-auto px-8 py-4 rounded-2xl liquid-glass border border-purpleAccent/30 hover:border-fuchsiaGlow/60 text-white font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-3 hover:bg-purpleCard">
                     <svg class="w-4 h-4 fill-current text-fuchsiaGlow" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.28 7.72-6.97c.34-.31-.07-.48-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
                     <span>Connect Telegram Bot</span>
                 </a>
@@ -470,11 +470,12 @@
                         <div class="relative">
                             <input type="text" id="location-input" value="Jaipur, Rajasthan" placeholder="Enter city or district..." class="w-full bg-obsidianBg/90 border border-purpleAccent/30 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-fuchsiaGlow transition-colors pl-9" />
                             <svg class="w-4 h-4 text-fuchsiaGlow fill-current absolute left-3 top-3" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                            <button onclick="getCurrentLocation()" class="absolute right-1.5 top-1.5 px-2.5 py-1 bg-purpleCard hover:bg-purpleAccent/30 text-[10px] font-mono text-slate-300 rounded-lg border border-purpleAccent/30 transition-all flex items-center gap-1">
+                            <button onclick="getCurrentLocation()" id="gps-btn" class="absolute right-1.5 top-1.5 px-2.5 py-1 bg-purpleCard hover:bg-purpleAccent/30 text-[10px] font-mono text-slate-300 rounded-lg border border-purpleAccent/30 transition-all flex items-center gap-1">
                                 <svg class="w-3 h-3 text-fuchsiaGlow fill-current" viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
                                 <span>GPS</span>
                             </button>
                         </div>
+                        <div id="location-status" class="text-[10px] font-mono text-slate-500 mt-1.5 min-h-[14px]"></div>
                     </div>
 
                     <div id="weather-snapshot-widget" class="bg-obsidianBg/95 rounded-2xl p-4 border border-purpleAccent/40 space-y-3 shadow-inner">
@@ -580,6 +581,10 @@
                     <div class="p-3 border-t border-purpleAccent/20 bg-obsidianBg/90">
                         <form id="chat-form" onsubmit="handleUserSubmit(event)" class="flex items-center space-x-2">
                             
+                            <button type="button" onclick="getCurrentLocation()" id="mic-location-btn" class="w-11 h-11 rounded-2xl bg-obsidianBg border border-purpleAccent/30 hover:border-fuchsiaGlow text-fuchsiaGlow hover:text-white hover:bg-purpleAccent/25 flex items-center justify-center transition-all shrink-0 shadow-md" title="Use my current location">
+                                <svg class="w-5 h-5 fill-current text-fuchsiaGlow" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            </button>
+
                             <button type="button" onclick="toggleVoiceRecording()" id="mic-btn" class="w-11 h-11 rounded-2xl bg-obsidianBg border border-purpleAccent/30 hover:border-fuchsiaGlow text-fuchsiaGlow hover:text-white hover:bg-purpleAccent/25 flex items-center justify-center transition-all shrink-0 relative group shadow-md" title="Record Voice Note">
                                 <svg class="w-5 h-5 fill-current text-fuchsiaGlow" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                             </button>
@@ -770,9 +775,9 @@
                     Send voice notes or text queries right from your smartphone. Get immediate audio responses without installing new apps.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center gap-4">
-                    <a href="https://t.me" target="_blank" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-purpleAccent via-purpleGlow to-fuchsiaGlow text-obsidianBg font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl shadow-purpleAccent/30 flex items-center gap-3 transform hover:-translate-y-0.5">
+                    <a href="https://t.me/sih26test_bot" target="_blank" rel="noopener" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-purpleAccent via-purpleGlow to-fuchsiaGlow text-obsidianBg font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl shadow-purpleAccent/30 flex items-center gap-3 transform hover:-translate-y-0.5">
                         <svg class="w-4 h-4 fill-current text-obsidianBg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                        <span>Open Telegram Bot (@WeatherGPT_SIH_Bot)</span>
+                        <span>Open Telegram Bot (@sih26test_bot)</span>
                     </a>
                 </div>
             </div>
@@ -1021,20 +1026,51 @@
         }
 
         function getCurrentLocation() {
-            if(navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const locInput = document.getElementById('location-input');
-                        if(locInput) {
-                            locInput.value = `GPS (${pos.coords.latitude.toFixed(2)}, ${pos.coords.longitude.toFixed(2)})`;
-                            fetchLiveWeatherForLocation('GPS Position');
-                        }
-                    },
-                    () => {
-                        alert("Geolocation access denied or unavailable. Using default location.");
-                    }
-                );
+            const statusEl = document.getElementById('location-status');
+            const gpsBtn = document.getElementById('gps-btn');
+
+            if (!navigator.geolocation) {
+                if (statusEl) statusEl.textContent = "Geolocation isn't supported in this browser.";
+                return;
             }
+
+            if (statusEl) statusEl.textContent = 'Locating…';
+            if (gpsBtn) gpsBtn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const locInput = document.getElementById('location-input');
+
+                    // Keep the exact "GPS (lat, lon)" format in the input itself —
+                    // the backend's geocode() regex parses this pattern directly,
+                    // skipping name lookup entirely so it's always accurate.
+                    if (locInput) locInput.value = `GPS (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+
+                    // Resolve a human-readable name just for display, via OpenStreetMap's
+                    // free reverse-geocoding API — doesn't affect what gets sent to the backend.
+                    try {
+                        const res = await fetch(
+                            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`
+                        );
+                        const data = await res.json();
+                        const place = data.address?.city || data.address?.town || data.address?.county || data.address?.state;
+                        if (statusEl) {
+                            statusEl.textContent = place ? `📍 Using your location: ${place}` : `📍 Using your location (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+                        }
+                    } catch (e) {
+                        if (statusEl) statusEl.textContent = `📍 Using your location (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+                    }
+
+                    if (gpsBtn) gpsBtn.disabled = false;
+                    fetchLiveWeatherForLocation('GPS Position');
+                },
+                () => {
+                    if (statusEl) statusEl.textContent = 'Location access denied — type a city instead.';
+                    if (gpsBtn) gpsBtn.disabled = false;
+                }
+            );
         }
 
         function toggleVoiceRecording() {
@@ -1230,7 +1266,7 @@
 
                         <div class="bg-obsidianBg/90 border border-purpleAccent/30 rounded-2xl p-3 flex items-center justify-between gap-3">
                             <div class="flex items-center gap-2">
-                                <button onclick='playVoiceNote("${audioId}", ${JSON.stringify(responseData.speechText)}, ${JSON.stringify(responseData.audioUrl || "")})' class="w-8 h-8 rounded-full bg-gradient-to-tr from-purpleAccent to-fuchsiaGlow flex items-center justify-center text-obsidianBg font-bold shadow-md hover:scale-105 transition-transform">
+                                <button id="${audioId}" onclick='playVoiceNote("${audioId}", ${JSON.stringify(responseData.speechText)}, ${JSON.stringify(responseData.audioUrl || "")})' class="w-8 h-8 rounded-full bg-gradient-to-tr from-purpleAccent to-fuchsiaGlow flex items-center justify-center text-obsidianBg font-bold shadow-md hover:scale-105 transition-transform">
                                     <svg class="w-4 h-4 fill-current text-obsidianBg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
                                 <div>
@@ -1246,23 +1282,72 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // Tracks whichever audio/speech bubble is currently playing, so only
+        // one plays at a time and its button can toggle between play/pause.
+        let activePlayer = { id: null, audio: null, isSpeech: false };
+
+        const ICON_PLAY = '<svg class="w-4 h-4 fill-current text-obsidianBg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+        const ICON_PAUSE = '<svg class="w-4 h-4 fill-current text-obsidianBg" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+        function setPlayerIcon(audioId, iconState) {
+            const btn = document.getElementById(audioId);
+            if (btn) btn.innerHTML = iconState === 'pause' ? ICON_PAUSE : ICON_PLAY;
+        }
+
+        function stopActivePlayer() {
+            if (activePlayer.audio) activePlayer.audio.pause();
+            if (activePlayer.isSpeech) window.speechSynthesis.cancel();
+            if (activePlayer.id) setPlayerIcon(activePlayer.id, 'play');
+            activePlayer = { id: null, audio: null, isSpeech: false };
+        }
+
         function playVoiceNote(audioId, speechText, audioUrl = "") {
+            // Clicking the same bubble that's already playing toggles pause/resume.
+            if (activePlayer.id === audioId) {
+                if (activePlayer.isSpeech) {
+                    if (window.speechSynthesis.paused) {
+                        window.speechSynthesis.resume();
+                        setPlayerIcon(audioId, 'pause');
+                    } else {
+                        window.speechSynthesis.pause();
+                        setPlayerIcon(audioId, 'play');
+                    }
+                } else if (activePlayer.audio) {
+                    if (activePlayer.audio.paused) {
+                        activePlayer.audio.play();
+                        setPlayerIcon(audioId, 'pause');
+                    } else {
+                        activePlayer.audio.pause();
+                        setPlayerIcon(audioId, 'play');
+                    }
+                }
+                return;
+            }
+
+            // A different bubble was playing — stop it and reset its icon first.
+            stopActivePlayer();
+
             if (audioUrl) {
                 const audio = new Audio(audioUrl);
-                audio.play().catch(() => playSpeechSynth(speechText));
+                audio.addEventListener('ended', () => { setPlayerIcon(audioId, 'play'); activePlayer = { id: null, audio: null, isSpeech: false }; });
+                audio.play()
+                    .then(() => { activePlayer = { id: audioId, audio, isSpeech: false }; setPlayerIcon(audioId, 'pause'); })
+                    .catch(() => playSpeechSynth(audioId, speechText));
             } else {
-                playSpeechSynth(speechText);
+                playSpeechSynth(audioId, speechText);
             }
         }
 
-        function playSpeechSynth(speechText) {
-            if('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(speechText);
-                utterance.rate = 0.95;
-                utterance.pitch = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
+        function playSpeechSynth(audioId, speechText) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(speechText);
+            utterance.rate = 0.95;
+            utterance.pitch = 1.0;
+            utterance.onend = () => { setPlayerIcon(audioId, 'play'); activePlayer = { id: null, audio: null, isSpeech: false }; };
+            activePlayer = { id: audioId, audio: null, isSpeech: true };
+            window.speechSynthesis.speak(utterance);
+            setPlayerIcon(audioId, 'pause');
         }
 
         function generatePersonaResponse(persona, queryText) {
