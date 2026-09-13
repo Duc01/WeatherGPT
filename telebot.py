@@ -6,11 +6,12 @@ from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from LLM import process_location_setup, process_text_message
 from tts import tts
+from teleToken import TOKEN
 import os
 
 
+# Run when /start is sent
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Send a message when /start is issued."""
     await update.message.reply_text(
         "Hi! Use /location to share your location, then /weather to get the weather."
     )
@@ -28,11 +29,13 @@ async def location_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     )
 
 
-async def handle_location(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Handle when user shares their location."""
+# User location sharing logic
+async def get_location(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     location = update.message.location
     latitude = location.latitude
     longitude = location.longitude
+
+    # Save it to persistent context.user_data storage
     context.user_data["location"] = {
         "latitude": latitude,
         "longitude": longitude,
@@ -43,8 +46,8 @@ async def handle_location(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     )
 
 
+# Send out weather info for given location
 async def weather_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Get weather for the user's shared location."""
     location = context.user_data.get("location")
     if not location:
         await update.message.reply_text("Please use /location and share your location first.")
@@ -75,8 +78,6 @@ async def post_init(application: Application) -> None:
 
 def main() -> None:
     """Start the bot."""
-    # Replace with your token from BotFather
-    TOKEN = "8676349485:AAGI9ZsjQ4VxEYX3TR-kUI1Ov9-93tvSE2Q"
     
     # Create the Application
     application = Application.builder().token(TOKEN).build()
@@ -88,7 +89,7 @@ def main() -> None:
     application.add_handler(CommandHandler("weather", weather_command))
     
     # Register message handlers
-    application.add_handler(MessageHandler(filters.LOCATION, handle_location))
+    application.add_handler(MessageHandler(filters.LOCATION, get_location))
 
     # Run the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
