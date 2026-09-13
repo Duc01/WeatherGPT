@@ -7,6 +7,9 @@ import os
 import time
 import soundfile
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from stt import stt
 from tts import tts
 from WeatherApi import get_farmer_weather, get_aviation_weather, get_disaster_risk_weather, get_fisherman_weather, get_general_weather
@@ -103,14 +106,7 @@ def get_llm_response(user_input: str, user_id: str) -> str:
     full_response = ""
 
     response = chat.send_message(augmented_input)
-    for chunk in response:
-        if not chunk.text:
-            continue
-        if first_token:
-            ttft = time.perf_counter() - start_time
-            print(f"[TTFT: {ttft:.2f}s]")
-            first_token = False
-        full_response += chunk.text
+    full_response = response.text
 
     print(f"WeatherGPT ({user_id}): {full_response}")
     return full_response
